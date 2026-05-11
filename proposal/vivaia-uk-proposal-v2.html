@@ -1,0 +1,1734 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>VIVAIA UK · Own the customer data behind every London call</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f3ece0;
+    --cream-soft: #f8f3e8;
+    --cream-warm: #ebe2d0;
+    --paper: #fbf7ec;
+    --ink: #221c14;
+    --ink-soft: #4a3f30;
+    --ink-mute: #7a6e5c;
+    --terracotta: #a35538;
+    --terracotta-deep: #7d3a22;
+    --sage: #515c3d;
+    --sage-deep: #38422a;
+    --rule: #d9cdb5;
+    --rule-soft: #e6dcc6;
+    --highlight: #f0c98c;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body { background: var(--cream); }
+
+  body {
+    font-family: "DM Sans", system-ui, sans-serif;
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  /* paper sheet wrapper, like the original PDF look */
+  .sheet {
+    max-width: 1240px;
+    margin: 32px auto;
+    background: var(--paper);
+    border-radius: 22px;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.6) inset,
+      0 30px 80px -40px rgba(70,50,20,0.25),
+      0 0 0 1px rgba(120,90,40,0.04);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* grain texture overlay for that printed paper feel */
+  .sheet::after {
+    content: "";
+    position: absolute; inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.2  0 0 0 0 0.15  0 0 0 0 0.08  0 0 0 0.045 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    opacity: 0.55;
+    mix-blend-mode: multiply;
+  }
+
+  .sheet > * { position: relative; z-index: 1; }
+
+  /* ────────── shared editorial bits ────────── */
+  .eyebrow {
+    font-family: "DM Sans", sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--terracotta);
+  }
+  .eyebrow .dot {
+    display: inline-block;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--terracotta);
+    vertical-align: 2px;
+    margin: 0 10px;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: "Fraunces", "Times New Roman", serif;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    font-variation-settings: "opsz" 120;
+  }
+
+  .display {
+    font-family: "Fraunces", serif;
+    font-weight: 400;
+    line-height: 0.96;
+    letter-spacing: -0.025em;
+    font-variation-settings: "opsz" 144, "SOFT" 30;
+  }
+
+  .rule {
+    border: 0;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  /* page running header */
+  .meta-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 28px 56px;
+    border-bottom: 1px solid var(--rule);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  .meta-bar .brand {
+    display: flex; align-items: baseline; gap: 14px;
+  }
+  .meta-bar .brand b {
+    font-family: "Fraunces", serif;
+    font-weight: 500;
+    font-size: 15px;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    text-transform: uppercase;
+  }
+  .meta-bar .pages { color: var(--ink-mute); }
+
+  /* ────────── COVER ────────── */
+  .cover {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 0;
+    min-height: 760px;
+  }
+  .cover-left {
+    padding: 60px 56px 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .cover-top { max-width: 580px; }
+  .cover .eyebrow { margin-bottom: 60px; }
+
+  h1.cover-title {
+    font-size: clamp(56px, 7.2vw, 104px);
+    line-height: 0.94;
+    margin: 14px 0 26px;
+    font-weight: 400;
+    font-variation-settings: "opsz" 144;
+  }
+  h1.cover-title em {
+    font-style: italic;
+    color: var(--terracotta-deep);
+    font-weight: 400;
+  }
+  h1.cover-title .quiet {
+    color: var(--ink-soft);
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .cover-sub {
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    max-width: 480px;
+    margin-top: 8px;
+  }
+
+  .cover-chips {
+    display: flex; flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 36px;
+  }
+  .chip {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: var(--cream-warm);
+    color: var(--ink-soft);
+    border: 1px solid var(--rule);
+  }
+  .chip.primary {
+    background: var(--terracotta);
+    color: #fbf7ec;
+    border-color: transparent;
+  }
+
+  .cover-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 40px;
+    margin-top: 60px;
+    padding-top: 30px;
+    border-top: 1px solid var(--rule);
+    font-size: 13px;
+    color: var(--ink-mute);
+  }
+  .cover-foot .by {
+    color: var(--ink-soft);
+  }
+  .cover-foot .by b {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .cover-foot .date {
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--ink-soft);
+  }
+
+  .cover-right {
+    position: relative;
+    background: var(--sage);
+    overflow: hidden;
+  }
+  .cover-right .img-wrap {
+    position: absolute; inset: 0;
+  }
+  .cover-right img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center 35%;
+    filter: saturate(0.92) contrast(0.98);
+  }
+  .cover-right::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(58,68,40,0.05) 0%, rgba(58,68,40,0.0) 30%, rgba(58,68,40,0.18) 100%);
+  }
+  .cover-right .stamp {
+    position: absolute;
+    top: 40px; right: 40px;
+    color: rgba(251,247,236,0.92);
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-size: 13px;
+    letter-spacing: 0.03em;
+    text-align: right;
+    line-height: 1.5;
+  }
+  .cover-right .stamp b {
+    display: block;
+    font-style: normal;
+    letter-spacing: 0.28em;
+    font-size: 10px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    color: rgba(251,247,236,0.7);
+    font-weight: 600;
+    font-family: "DM Sans", sans-serif;
+  }
+
+  /* ────────── SECTION CHROME ────────── */
+  section {
+    padding: 100px 56px;
+    position: relative;
+  }
+  section + section { border-top: 1px solid var(--rule-soft); }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 28px;
+  }
+  .section-label .num {
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    color: var(--terracotta);
+    font-size: 14px;
+    font-weight: 400;
+  }
+  .section-label .line {
+    flex: 0 0 40px;
+    height: 1px;
+    background: var(--terracotta);
+    opacity: 0.5;
+  }
+
+  /* ────────── WHY NOW ────────── */
+  .whynow {
+    display: grid;
+    grid-template-columns: 0.5fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .whynow .label-col .eyebrow { display: block; margin-bottom: 16px; }
+  .whynow .label-col .micro {
+    font-size: 13px;
+    color: var(--ink-mute);
+    line-height: 1.6;
+    margin-top: 14px;
+    max-width: 220px;
+  }
+  .whynow h2 {
+    font-size: clamp(38px, 4.4vw, 62px);
+    line-height: 1.02;
+    max-width: 880px;
+    font-weight: 400;
+    letter-spacing: -0.018em;
+  }
+  .whynow h2 em {
+    color: var(--terracotta-deep);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .whynow .lede {
+    margin-top: 28px;
+    font-size: 17px;
+    color: var(--ink-soft);
+    max-width: 720px;
+    line-height: 1.6;
+  }
+  .whynow .lede strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .stats {
+    margin-top: 56px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .stat {
+    padding: 28px 24px 28px 0;
+    border-right: 1px solid var(--rule);
+  }
+  .stat:last-child { border-right: 0; padding-right: 0; }
+  .stat .v {
+    font-family: "Fraunces", serif;
+    font-size: 38px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .stat .v sup { font-size: 0.5em; vertical-align: 0.6em; color: var(--terracotta); }
+  .stat .l {
+    margin-top: 10px;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    font-weight: 500;
+  }
+
+  /* ────────── THREE PRODUCTS ────────── */
+  .products {
+    background: var(--paper);
+    padding: 110px 56px 90px;
+  }
+  .products-head {
+    display: grid;
+    grid-template-columns: 0.55fr 1fr;
+    gap: 64px;
+    margin-bottom: 56px;
+    align-items: end;
+  }
+  .products-head .ko {
+    color: var(--ink-soft);
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 320px;
+    padding-bottom: 6px;
+  }
+  .products-head h2 {
+    font-size: clamp(40px, 4.8vw, 68px);
+    line-height: 1.0;
+    font-weight: 400;
+    max-width: 820px;
+  }
+  .products-head h2 em {
+    font-style: italic;
+    color: var(--terracotta-deep);
+  }
+
+  .product {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 56px;
+    padding: 56px 0;
+    border-top: 1px solid var(--rule);
+    align-items: center;
+  }
+  .product:last-child { border-bottom: 1px solid var(--rule); }
+  .product.reverse {
+    grid-template-columns: 1.2fr 1fr;
+  }
+  .product.reverse .product-meta { order: 2; }
+  .product.reverse .product-media { order: 1; }
+
+  .product-meta .p-row {
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    margin-bottom: 16px;
+  }
+  .product-meta .p-num {
+    font-family: "Fraunces", serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--terracotta);
+    font-weight: 400;
+  }
+  .product-meta .p-name {
+    font-family: "Fraunces", serif;
+    font-size: clamp(40px, 4.4vw, 60px);
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+    color: var(--ink);
+  }
+  .product-meta .p-name em {
+    font-style: italic;
+    color: var(--terracotta-deep);
+  }
+  .product-meta .p-tag {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
+  .product-meta .p-tag::before {
+    content: "—";
+    color: var(--terracotta);
+    margin-right: 10px;
+    letter-spacing: 0;
+  }
+  .product-meta p {
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 480px;
+  }
+  .product-meta .p-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 22px;
+  }
+  .product-meta .p-chips .p-chip {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--cream);
+    color: var(--ink-soft);
+    border: 1px solid var(--rule);
+  }
+
+  .product-media {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    aspect-ratio: 16/10;
+    background: var(--cream-warm);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.5) inset,
+      0 24px 48px -32px rgba(70,50,20,0.35),
+      0 0 0 1px rgba(120,90,40,0.06);
+  }
+  .product-media video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    background: #000;
+  }
+  .product-media .media-stamp {
+    position: absolute;
+    top: 16px; left: 16px;
+    background: rgba(34,28,20,0.78);
+    color: var(--cream-soft);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 6px 10px;
+    border-radius: 4px;
+    backdrop-filter: blur(8px);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .product-media .media-stamp .live {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #e34d2c;
+    margin-right: 8px;
+    vertical-align: 1px;
+    box-shadow: 0 0 0 0 rgba(227,77,44,0.6);
+    animation: pulse 1.4s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(227,77,44,0.6); }
+    100% { box-shadow: 0 0 0 9px rgba(227,77,44,0); }
+  }
+
+  /* AI Voice: live demo CTA card */
+  .voice-cta {
+    aspect-ratio: auto;
+    min-height: 380px;
+    background:
+      radial-gradient(120% 90% at 80% 10%, rgba(240,201,140,0.18), transparent 55%),
+      radial-gradient(100% 80% at 10% 100%, rgba(163,85,56,0.35), transparent 60%),
+      linear-gradient(160deg, var(--ink) 0%, #3b3225 100%);
+    color: var(--cream-soft);
+    padding: 44px 44px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 18px;
+    position: relative;
+  }
+  .voice-cta .vc-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--highlight);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .voice-cta .vc-eyebrow .live {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #e34d2c;
+    box-shadow: 0 0 0 0 rgba(227,77,44,0.7);
+    animation: pulse 1.4s ease-out infinite;
+  }
+  .voice-cta .vc-title {
+    font-family: "Fraunces", serif;
+    font-size: clamp(30px, 3.2vw, 44px);
+    line-height: 1.02;
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    max-width: 380px;
+    color: var(--cream-soft);
+  }
+  .voice-cta .vc-title em {
+    font-style: italic;
+    color: var(--highlight);
+  }
+  .voice-cta .vc-sub {
+    font-size: 14px;
+    line-height: 1.55;
+    color: rgba(251,247,236,0.72);
+    max-width: 360px;
+  }
+  .voice-cta .vc-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    align-self: flex-start;
+    padding: 16px 22px;
+    background: var(--highlight);
+    color: var(--ink);
+    border-radius: 999px;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 280ms ease, background 280ms ease, box-shadow 280ms ease;
+    box-shadow: 0 0 0 0 rgba(240,201,140,0.45);
+  }
+  .voice-cta .vc-btn:hover {
+    background: #f8d9a3;
+    transform: translateY(-1px);
+    box-shadow: 0 0 0 6px rgba(240,201,140,0.18);
+  }
+  .voice-cta .vc-btn .arrow {
+    display: inline-block;
+    width: 24px; height: 1px;
+    background: currentColor;
+    position: relative;
+  }
+  .voice-cta .vc-btn .arrow::after {
+    content: "";
+    position: absolute;
+    right: 0; top: -3px;
+    width: 7px; height: 7px;
+    border-top: 1px solid currentColor;
+    border-right: 1px solid currentColor;
+    transform: rotate(45deg);
+  }
+  .voice-cta .vc-note {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(251,247,236,0.5);
+    font-weight: 500;
+  }
+  /* concentric ring decoration in the corner — "ringing" feel */
+  .voice-cta .vc-rings {
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    pointer-events: none;
+  }
+  .voice-cta .vc-rings::before,
+  .voice-cta .vc-rings::after,
+  .voice-cta .vc-rings span {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(240,201,140,0.22);
+    animation: ring 3.4s ease-out infinite;
+  }
+  .voice-cta .vc-rings::after {
+    inset: 30px;
+    animation-delay: 1.1s;
+    border-color: rgba(240,201,140,0.16);
+  }
+  .voice-cta .vc-rings span {
+    display: block;
+    inset: 60px;
+    animation-delay: 2.2s;
+    border-color: rgba(240,201,140,0.12);
+  }
+  @keyframes ring {
+    0% { transform: scale(0.6); opacity: 0; }
+    20% { opacity: 1; }
+    100% { transform: scale(1.4); opacity: 0; }
+  }
+
+  /* Signal: animated waveform visual instead of video */
+  .signal-visual {
+    background:
+      radial-gradient(120% 80% at 50% 0%, rgba(240,201,140,0.08), transparent 60%),
+      linear-gradient(160deg, var(--sage-deep) 0%, var(--ink) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 28px 32px;
+    color: var(--cream-soft);
+  }
+  .signal-visual .sig-top {
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(251,247,236,0.55);
+    font-weight: 600;
+  }
+  .signal-visual .sig-top b {
+    color: var(--highlight);
+    font-weight: 600;
+  }
+  .signal-visual .sig-mid {
+    display: flex; align-items: center; justify-content: center;
+    flex: 1;
+    padding: 12px 0;
+  }
+  .signal-waves {
+    display: flex; align-items: center; justify-content: center;
+    gap: 4px;
+    height: 90px;
+    width: 100%;
+    max-width: 480px;
+  }
+  .signal-waves .bar {
+    flex: 1;
+    background: linear-gradient(180deg, var(--highlight) 0%, #d9a566 100%);
+    border-radius: 2px;
+    transform-origin: center;
+    animation: wavebar 1.6s ease-in-out infinite;
+    opacity: 0.92;
+  }
+  @keyframes wavebar {
+    0%, 100% { transform: scaleY(0.18); }
+    50% { transform: scaleY(1); }
+  }
+  .signal-visual .sig-bottom {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 8px;
+  }
+  .signal-visual .sig-card {
+    background: rgba(251,247,236,0.06);
+    border: 1px solid rgba(251,247,236,0.12);
+    border-radius: 4px;
+    padding: 10px 12px;
+  }
+  .signal-visual .sig-card .lbl {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(251,247,236,0.55);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .signal-visual .sig-card .val {
+    font-family: "Fraunces", serif;
+    font-size: 12px;
+    color: rgba(251,247,236,0.7);
+    font-style: italic;
+    line-height: 1.3;
+  }
+  .signal-visual .sig-card .val b {
+    display: block;
+    color: var(--highlight);
+    font-style: normal;
+    font-family: "Fraunces", serif;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+  }
+
+  /* ────────── BENEFITS — the heart ────────── */
+  .benefits {
+    background: var(--cream);
+    padding: 120px 56px 100px;
+  }
+  .benefits-head {
+    display: grid;
+    grid-template-columns: 0.5fr 1fr;
+    gap: 80px;
+    margin-bottom: 80px;
+  }
+  .benefits-head h2 {
+    font-size: clamp(46px, 5.6vw, 84px);
+    line-height: 0.98;
+    font-weight: 400;
+    max-width: 760px;
+  }
+  .benefits-head h2 .alt {
+    font-style: italic;
+    color: var(--terracotta-deep);
+    font-weight: 400;
+  }
+  .benefits-head .ko {
+    font-size: 16px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    max-width: 320px;
+    padding-top: 12px;
+  }
+
+  .benefit {
+    display: grid;
+    grid-template-columns: 80px 1fr 1.2fr;
+    gap: 40px;
+    padding: 48px 0;
+    border-top: 1px solid var(--rule);
+    align-items: start;
+    position: relative;
+  }
+  .benefit:last-child { border-bottom: 1px solid var(--rule); }
+  .benefit .n {
+    font-family: "Fraunces", serif;
+    font-size: 52px;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--terracotta);
+    font-variation-settings: "opsz" 144;
+    font-style: italic;
+  }
+  .benefit h3 {
+    font-size: clamp(28px, 2.8vw, 42px);
+    line-height: 1.05;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    max-width: 380px;
+  }
+  .benefit h3 em {
+    font-style: italic;
+    color: var(--sage-deep);
+  }
+  .benefit .body {
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 540px;
+  }
+  .benefit .body p + p { margin-top: 14px; }
+  .benefit .tag {
+    display: inline-block;
+    margin-top: 18px;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    font-weight: 600;
+  }
+  .benefit .tag::before {
+    content: "→";
+    margin-right: 8px;
+    font-family: "Fraunces", serif;
+  }
+
+  /* a tiny editorial sparkle on hover */
+  .benefit:hover .n { transform: translateX(4px); transition: transform 400ms ease; }
+  .benefit .n { transition: transform 600ms ease; }
+
+  /* ────────── DATA OWNED STRIP ────────── */
+  .owned {
+    background: var(--ink);
+    color: var(--cream-soft);
+    padding: 80px 56px;
+  }
+  .owned .top {
+    display: grid;
+    grid-template-columns: 0.7fr 1.3fr;
+    gap: 64px;
+    align-items: end;
+    margin-bottom: 56px;
+  }
+  .owned .eyebrow { color: var(--highlight); }
+  .owned .eyebrow .dot { background: var(--highlight); }
+  .owned h2 {
+    color: var(--cream-soft);
+    font-size: clamp(34px, 4vw, 56px);
+    line-height: 1.02;
+    font-weight: 400;
+    max-width: 720px;
+  }
+  .owned h2 em {
+    font-style: italic;
+    color: var(--highlight);
+  }
+  .owned .small {
+    color: rgba(251,247,236,0.65);
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 280px;
+  }
+  .owned-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid rgba(251,247,236,0.18);
+  }
+  .owned-grid .col {
+    padding: 28px 24px 0 0;
+    border-right: 1px solid rgba(251,247,236,0.12);
+  }
+  .owned-grid .col:last-child { border-right: 0; }
+  .owned-grid .col h4 {
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--highlight);
+    font-weight: 600;
+    font-family: "DM Sans", sans-serif;
+    margin-bottom: 16px;
+  }
+  .owned-grid .col ul {
+    list-style: none;
+    display: grid;
+    gap: 8px;
+  }
+  .owned-grid .col li {
+    font-size: 14px;
+    color: rgba(251,247,236,0.82);
+    line-height: 1.45;
+    padding-left: 16px;
+    position: relative;
+  }
+  .owned-grid .col li::before {
+    content: "·";
+    position: absolute;
+    left: 0;
+    color: var(--highlight);
+    font-size: 20px;
+    line-height: 1;
+    top: 0;
+  }
+
+  /* ────────── PRICE OFFER ────────── */
+  .offer {
+    background: var(--paper);
+    padding: 110px 56px 100px;
+  }
+  .offer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 64px;
+    align-items: stretch;
+  }
+
+  .price-card {
+    background: var(--terracotta);
+    color: var(--cream-soft);
+    border-radius: 6px;
+    padding: 56px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .price-card::before {
+    content: "";
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .price-card .label {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: rgba(251,247,236,0.7);
+    margin-bottom: 30px;
+  }
+  .price-card .label .pill {
+    display: inline-block;
+    background: rgba(251,247,236,0.16);
+    padding: 4px 10px;
+    border-radius: 999px;
+    margin-left: 8px;
+    letter-spacing: 0.14em;
+  }
+  .price-card .figure {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-family: "Fraunces", serif;
+    font-weight: 400;
+    font-variation-settings: "opsz" 144;
+  }
+  .price-card .figure .currency {
+    font-size: 44px;
+    line-height: 1;
+    opacity: 0.85;
+  }
+  .price-card .figure .num {
+    font-size: 132px;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+  }
+  .price-card .figure .per {
+    font-size: 16px;
+    font-family: "DM Sans", sans-serif;
+    color: rgba(251,247,236,0.75);
+    margin-left: 4px;
+    letter-spacing: 0;
+  }
+  .price-card .blurb {
+    margin-top: 24px;
+    font-size: 16px;
+    line-height: 1.55;
+    color: rgba(251,247,236,0.85);
+    max-width: 380px;
+  }
+  .price-card .note {
+    margin-top: 36px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(251,247,236,0.18);
+    font-size: 13px;
+    color: rgba(251,247,236,0.7);
+    line-height: 1.55;
+  }
+  .price-card .note b {
+    color: var(--cream-soft);
+    font-weight: 600;
+  }
+
+  .includes h3 {
+    font-size: 30px;
+    line-height: 1.1;
+    font-weight: 400;
+    margin-bottom: 8px;
+  }
+  .includes .lede {
+    color: var(--ink-mute);
+    font-size: 15px;
+    margin-bottom: 26px;
+    max-width: 440px;
+  }
+  .includes ul {
+    list-style: none;
+  }
+  .includes li {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 4px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--rule-soft);
+    font-size: 15px;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+  .includes li:last-child { border-bottom: 0; }
+  .includes li .tick {
+    color: var(--terracotta);
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .includes li b { font-weight: 600; }
+
+  /* ────────── PHASE 2 ────────── */
+  .phase2 {
+    background: var(--sage);
+    color: var(--cream-soft);
+    padding: 110px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+  .phase2 .eyebrow {
+    color: var(--highlight);
+  }
+  .phase2 .eyebrow .dot { background: var(--highlight); }
+  .phase2 .section-label .num { color: var(--highlight); }
+  .phase2 .section-label .line { background: var(--highlight); }
+
+  .p2-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .p2-grid h2 {
+    color: var(--cream-soft);
+    font-size: clamp(40px, 4.6vw, 64px);
+    line-height: 1.02;
+    font-weight: 400;
+    max-width: 640px;
+  }
+  .p2-grid h2 em {
+    font-style: italic;
+    color: var(--highlight);
+  }
+  .p2-grid .lede {
+    margin-top: 22px;
+    color: rgba(251,247,236,0.78);
+    font-size: 16px;
+    line-height: 1.65;
+    max-width: 520px;
+  }
+  .p2-grid .later {
+    display: inline-block;
+    margin-top: 28px;
+    padding: 6px 14px;
+    border: 1px solid rgba(240,201,140,0.4);
+    color: var(--highlight);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border-radius: 999px;
+  }
+  .p2-list {
+    display: grid;
+    gap: 18px;
+  }
+  .p2-item {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 4px;
+    padding: 18px 0;
+    border-top: 1px solid rgba(251,247,236,0.16);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .p2-item:last-child { border-bottom: 1px solid rgba(251,247,236,0.16); }
+  .p2-item .k {
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    color: var(--highlight);
+    font-size: 14px;
+  }
+  .p2-item b { color: var(--cream-soft); font-weight: 600; display: block; margin-bottom: 4px; }
+  .p2-item span { color: rgba(251,247,236,0.7); }
+
+  /* ────────── CTA ────────── */
+  .closing {
+    background: var(--cream);
+    padding: 120px 56px 110px;
+    text-align: left;
+  }
+  .closing-inner {
+    display: grid;
+    grid-template-columns: 0.7fr 1.3fr;
+    gap: 80px;
+    align-items: end;
+  }
+  .closing-img {
+    border-radius: 4px;
+    overflow: hidden;
+    aspect-ratio: 4/5;
+    background: var(--cream-warm);
+  }
+  .closing-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: saturate(0.95);
+  }
+  .closing h2 {
+    font-size: clamp(46px, 5.8vw, 84px);
+    line-height: 0.98;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    max-width: 760px;
+  }
+  .closing h2 em {
+    font-style: italic;
+    color: var(--terracotta-deep);
+  }
+  .closing .body {
+    margin-top: 26px;
+    font-size: 17px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    max-width: 560px;
+  }
+  .cta-row {
+    margin-top: 44px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 28px;
+    background: var(--ink);
+    color: var(--cream-soft);
+    border-radius: 999px;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 300ms ease, background 300ms ease;
+  }
+  .btn:hover { background: var(--terracotta-deep); transform: translateY(-1px); }
+  .btn .arrow {
+    display: inline-block;
+    width: 26px; height: 1px;
+    background: currentColor;
+    position: relative;
+  }
+  .btn .arrow::after {
+    content: "";
+    position: absolute;
+    right: 0; top: -3px;
+    width: 7px; height: 7px;
+    border-top: 1px solid currentColor;
+    border-right: 1px solid currentColor;
+    transform: rotate(45deg);
+  }
+  .cta-meta {
+    font-size: 13px;
+    color: var(--ink-mute);
+    line-height: 1.6;
+    max-width: 300px;
+  }
+  .cta-meta b { color: var(--ink); font-weight: 600; }
+
+  .colophon {
+    margin-top: 90px;
+    padding-top: 28px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    font-weight: 500;
+  }
+  .colophon b { color: var(--ink); font-weight: 600; }
+
+  /* ────────── motion on load ────────── */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      animation: rise 900ms cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+    }
+    .reveal.d1 { animation-delay: 80ms; }
+    .reveal.d2 { animation-delay: 180ms; }
+    .reveal.d3 { animation-delay: 280ms; }
+    .reveal.d4 { animation-delay: 380ms; }
+    .reveal.d5 { animation-delay: 480ms; }
+    .reveal.d6 { animation-delay: 580ms; }
+    @keyframes rise {
+      to { opacity: 1; transform: translateY(0); }
+    }
+  }
+
+  /* ────────── responsive ────────── */
+  @media (max-width: 980px) {
+    .sheet { margin: 14px; border-radius: 16px; }
+    section, .meta-bar, .benefits, .offer, .phase2, .closing { padding-left: 28px; padding-right: 28px; }
+    .meta-bar { padding-top: 22px; padding-bottom: 22px; }
+    .cover { grid-template-columns: 1fr; min-height: 0; }
+    .cover-left { padding: 36px 28px 36px; }
+    .cover-right { aspect-ratio: 4/3; }
+    .whynow, .benefits-head, .offer-grid, .p2-grid, .closing-inner {
+      grid-template-columns: 1fr;
+      gap: 36px;
+    }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .stat:nth-child(2) { border-right: 0; }
+    .stat:nth-child(1), .stat:nth-child(2) { border-bottom: 1px solid var(--rule); }
+    .products { padding: 56px 28px; }
+    .products-head { grid-template-columns: 1fr; gap: 28px; margin-bottom: 32px; }
+    .product, .product.reverse { grid-template-columns: 1fr; gap: 28px; padding: 36px 0; }
+    .product.reverse .product-meta { order: 1; }
+    .product.reverse .product-media { order: 2; }
+    .product-meta .p-name { font-size: 38px; }
+    .signal-visual .sig-bottom { grid-template-columns: 1fr; }
+    .owned { padding: 56px 28px; }
+    .owned .top { grid-template-columns: 1fr; gap: 24px; margin-bottom: 36px; }
+    .owned-grid { grid-template-columns: 1fr 1fr; }
+    .owned-grid .col { padding: 24px 16px 0 0; border-bottom: 1px solid rgba(251,247,236,0.12); }
+    .owned-grid .col:nth-child(2) { border-right: 0; }
+    .benefit { grid-template-columns: 1fr; gap: 16px; padding: 36px 0; }
+    .benefit .n { font-size: 42px; }
+    .price-card .figure .num { font-size: 96px; }
+    section { padding: 64px 28px; }
+    .benefits, .offer, .phase2, .closing { padding-top: 72px; padding-bottom: 72px; }
+  }
+
+  /* ────────── print ────────── */
+  @media print {
+    body { background: white; }
+    .sheet { box-shadow: none; margin: 0; max-width: none; border-radius: 0; }
+    .sheet::after { display: none; }
+    .reveal { opacity: 1 !important; transform: none !important; animation: none !important; }
+    section { page-break-inside: avoid; }
+    .benefits, .cover, .offer, .phase2, .closing { page-break-after: always; }
+  }
+</style>
+</head>
+<body>
+
+<article class="sheet">
+
+  <!-- running header -->
+  <header class="meta-bar reveal">
+    <div class="brand">
+      <b>VIVAIA × Macaws AI</b>
+      <span>London Store Proposal</span>
+    </div>
+    <div class="pages">May 2026 · Confidential</div>
+  </header>
+
+  <!-- ────────── COVER ────────── -->
+  <section class="cover" style="padding:0;">
+    <div class="cover-left">
+      <div class="cover-top">
+        <span class="eyebrow reveal d1">
+          For VIVAIA UK <span class="dot"></span> Westfield London
+        </span>
+        <h1 class="cover-title display reveal d2">
+          Own the<br>
+          <em>customer data</em><br>
+          behind every<br>
+          London call.
+        </h1>
+        <p class="cover-sub reveal d3">
+          Three products in one monthly service — <b>AI&nbsp;Voice</b> answers every call,
+          <b>Signal</b> monitors and analyses each conversation, <b>Connect</b> stores every contact in a CRM the brand owns.
+          One central line for every VIVAIA store, whether you have two or two hundred.
+        </p>
+        <div class="cover-chips reveal d4">
+          <span class="chip primary">£600 / month</span>
+          <span class="chip">AI&nbsp;Voice</span>
+          <span class="chip">Signal</span>
+          <span class="chip">Connect</span>
+        </div>
+      </div>
+      <div class="cover-foot reveal d5">
+        <div class="by">
+          Prepared by <b>Macaws AI</b> for the <b>VIVAIA UK</b> leadership team.<br>
+          One-page commercial summary, ready to action.
+        </div>
+        <div class="date">May, 2026</div>
+      </div>
+    </div>
+    <div class="cover-right reveal d2">
+      <div class="img-wrap">
+        <img src="../images/20250415-MARGOT_20MARY-JANE-shflatse2409100028-model-product_20description-domes_898a7dd7804e.jpg" alt="VIVAIA Margot Mary-Jane" />
+      </div>
+      <div class="stamp">
+        <b>One line · every store</b>
+        2 stores or 200<br>
+        <em>the same customer database</em>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────── WHY NOW ────────── -->
+  <section class="whynow-section">
+    <div class="whynow">
+      <div class="label-col">
+        <div class="section-label">
+          <span class="num">i.</span>
+          <span class="line"></span>
+        </div>
+        <span class="eyebrow">Why now</span>
+        <p class="micro">
+          The brand owner should own the customer relationship — not the carrier, not the call log, not the staff member's memory.
+        </p>
+      </div>
+      <div class="copy-col">
+        <h2>
+          Every London call is customer data.
+          Today, <em>VIVAIA loses most of it the moment the call ends.</em>
+        </h2>
+        <p class="lede">
+          A portion of Westfield calls go unanswered, and the ones that get through leave almost nothing behind.
+          A name, maybe a question — rarely the <strong>fit issue, the product interest, or the intent to visit</strong>
+          that the brand owner could act on a week later. The system below captures all of it into a CRM
+          <strong>VIVAIA owns</strong>, on <strong>one central line that serves every store</strong> — whether you have two stores or two hundred.
+        </p>
+        <div class="stats">
+          <div class="stat">
+            <div class="v">100<sup>%</sup></div>
+            <div class="l">Calls captured</div>
+          </div>
+          <div class="stat">
+            <div class="v">1</div>
+            <div class="l">Central line, every store</div>
+          </div>
+          <div class="stat">
+            <div class="v">∞</div>
+            <div class="l">Stores it scales to</div>
+          </div>
+          <div class="stat">
+            <div class="v">24/7</div>
+            <div class="l">Always answered</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────── THREE PRODUCTS ────────── -->
+  <section class="products">
+    <div class="products-head">
+      <div>
+        <div class="section-label">
+          <span class="num">ii.</span>
+          <span class="line"></span>
+        </div>
+        <span class="eyebrow">What you are getting · three products, one service</span>
+        <p class="ko" style="margin-top:18px;">
+          AI Voice answers. Signal listens, records and analyses. Connect stores the contact in a CRM the brand owns —
+          ready for remarketing the moment Phase 2 begins.
+        </p>
+      </div>
+      <h2>
+        Voice. Intelligence. CRM.<br>
+        <em>One central line, every VIVAIA store.</em>
+      </h2>
+    </div>
+
+    <!-- 01 · AI VOICE -->
+    <article class="product">
+      <div class="product-meta">
+        <div class="p-row">
+          <span class="p-num">01</span>
+          <span class="p-name"><em>AI Voice</em></span>
+        </div>
+        <span class="p-tag">Answers every call</span>
+        <p>
+          The brand-safe voice on the other end of every VIVAIA UK number.
+          Trained on the store's FAQs, product range, returns policy and brand tone.
+          Saturday lunchtime, midweek 9 pm, bank-holiday Monday — every caller is met, never met by voicemail.
+          Complex queries are escalated to the right staff member with full context.
+        </p>
+        <div class="p-chips">
+          <span class="p-chip">24/7 answering</span>
+          <span class="p-chip">Brand-safe tone</span>
+          <span class="p-chip">Smart escalation</span>
+          <span class="p-chip">One number, every store</span>
+        </div>
+      </div>
+      <div class="product-media voice-cta">
+        <div class="vc-rings" aria-hidden="true"><span></span></div>
+        <div class="vc-eyebrow"><span class="live"></span>Try it live</div>
+        <h4 class="vc-title">Hear AI Voice <em>call you back.</em></h4>
+        <p class="vc-sub">
+          Leave your name and number. AI Voice will ring you within 60 seconds,
+          in the same brand-safe tone it would answer Westfield's line.
+        </p>
+        <a class="vc-btn" href="https://link.knotie.ai/widget/form/an8joTiVA9bPfx42MzQJ" target="_blank" rel="noopener">
+          Get a call now
+          <span class="arrow"></span>
+        </a>
+        <div class="vc-note">≈ 60 seconds · no commitment</div>
+      </div>
+    </article>
+
+    <!-- 02 · SIGNAL -->
+    <article class="product reverse">
+      <div class="product-meta">
+        <div class="p-row">
+          <span class="p-num">02</span>
+          <span class="p-name"><em>Signal</em></span>
+        </div>
+        <span class="p-tag">Monitors · analyses · records</span>
+        <p>
+          Every call is recorded, transcribed and analysed in real time. Signal scores intent,
+          tags reason-for-call, surfaces fit and product themes, and flags missed opportunities —
+          so the brand owner sees what London is actually asking for, by week, by category, by store.
+          The same engine listens across two stores or two hundred.
+        </p>
+        <div class="p-chips">
+          <span class="p-chip">Call recording</span>
+          <span class="p-chip">AI transcription</span>
+          <span class="p-chip">Intent scoring</span>
+          <span class="p-chip">Auto reason-for-call tags</span>
+        </div>
+      </div>
+      <div class="product-media">
+        <div class="media-stamp"><span class="live"></span>Signal · analysing a real call</div>
+        <video src="../final_vo_overlays_v2.mp4" controls preload="metadata" playsinline></video>
+      </div>
+    </article>
+
+    <!-- 03 · CONNECT -->
+    <article class="product">
+      <div class="product-meta">
+        <div class="p-row">
+          <span class="p-num">03</span>
+          <span class="p-name"><em>Connect</em></span>
+        </div>
+        <span class="p-tag">CRM for remarketing</span>
+        <p>
+          The CRM the brand owns. Every contact captured by AI Voice and every signal scored by Signal
+          lands in one searchable customer record — name, number, fit need, category interest, restock alerts, intent.
+          Ready for email flows, paid social audiences and product launch waitlists. Exportable, joinable, yours.
+        </p>
+        <div class="p-chips">
+          <span class="p-chip">Brand-owned data</span>
+          <span class="p-chip">Unified contact records</span>
+          <span class="p-chip">Remarketing-ready</span>
+          <span class="p-chip">Exportable any time</span>
+        </div>
+      </div>
+      <div class="product-media">
+        <div class="media-stamp"><span class="live"></span>Connect · CRM walkthrough</div>
+        <video src="../crm_avatar_vivaia.mp4" controls preload="metadata" playsinline></video>
+      </div>
+    </article>
+  </section>
+
+  <!-- ────────── BENEFITS — the heart ────────── -->
+  <section class="benefits">
+    <div class="benefits-head">
+      <div>
+        <div class="section-label">
+          <span class="num">iii.</span>
+          <span class="line"></span>
+        </div>
+        <span class="eyebrow">What VIVAIA gets</span>
+        <p class="ko" style="margin-top:18px;">
+          Five tangible shifts inside the London store, from week one.
+          No new tools for the team to learn.
+        </p>
+      </div>
+      <h2>
+        Five reasons<br>
+        <span class="alt">the brand owner wins.</span>
+      </h2>
+    </div>
+
+    <div class="benefit-list">
+
+      <article class="benefit">
+        <div class="n">01</div>
+        <h3>VIVAIA <em>owns</em> the customer data.</h3>
+        <div class="body">
+          <p>Powered by <b>Connect</b>: every caller lands in a CRM that belongs to the brand — not the phone provider, not a staff notebook, not a forgotten conversation. Name, number, style asked about, fit concern, restock interest, intent to visit — all yours, exportable, searchable, reusable.</p>
+          <p>This is the central shift: the London store stops being a place where customer signals are <strong>heard and lost</strong>, and starts being a place where they are <strong>captured and owned</strong>.</p>
+          <span class="tag">Connect · first-party data, owned by the brand</span>
+        </div>
+      </article>
+
+      <article class="benefit">
+        <div class="n">02</div>
+        <h3>One central line — <em>2 stores or 200.</em></h3>
+        <div class="body">
+          <p>Powered by <b>AI Voice</b>: customers call one VIVAIA UK number. The same brand-safe voice answers for Westfield today, Manchester next year, the next twenty stores after that. Same tone, same CRM, same tags, one dashboard.</p>
+          <p>You never re-procure phone systems as you expand. Scaling stores stops being constrained by who picks up the phone.</p>
+          <span class="tag">AI Voice · one brand voice, every location</span>
+        </div>
+      </article>
+
+      <article class="benefit">
+        <div class="n">03</div>
+        <h3>Never miss<br><em>a customer.</em></h3>
+        <div class="body">
+          <p>Powered by <b>AI Voice</b>: every call is answered in a brand-safe voice — peak Saturday lunchtime, midweek 9 pm, bank-holiday Monday. No more voicemails, no busy signals, no lost first impressions, no high-intent caller who phoned twice and gave up.</p>
+          <span class="tag">AI Voice · always on, premium tone</span>
+        </div>
+      </article>
+
+      <article class="benefit">
+        <div class="n">04</div>
+        <h3>The shop floor<br>stays <em>on the floor.</em></h3>
+        <div class="body">
+          <p>Routine enquiries — hours, directions, stock checks, returns, care — are handled by <b>AI Voice</b> and analysed by <b>Signal</b> before they ever reach a staff member. Your team spends their time with the woman in front of them, not the phone in the back.</p>
+          <span class="tag">AI Voice + Signal · better in-store experience</span>
+        </div>
+      </article>
+
+      <article class="benefit">
+        <div class="n">05</div>
+        <h3>A foundation for <em>remarketing.</em></h3>
+        <div class="body">
+          <p>Because <b>Signal</b> scores intent and <b>Connect</b> stores the contact, every captured caller becomes a future audience: loafer-curious, wide-fit, restock-waiting, occasion-shopping. The same CRM later feeds email flows, paid social audiences and product-launch waitlists — without renting that intent from a platform.</p>
+          <span class="tag">Signal + Connect · owned audience, by intent</span>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ────────── DATA OWNED STRIP ────────── -->
+  <section class="owned">
+    <div class="top">
+      <div>
+        <div class="section-label" style="margin-bottom:14px;">
+          <span class="num" style="color:var(--highlight);">iv.</span>
+          <span class="line" style="background:var(--highlight);"></span>
+        </div>
+        <span class="eyebrow">Inside Connect · the data VIVAIA owns</span>
+        <p class="small" style="margin-top:14px;">
+          Every field below is captured into the CRM VIVAIA owns —
+          exportable, searchable, joinable to email, paid social and product launches.
+        </p>
+      </div>
+      <h2>
+        Concrete customer data the brand owner gets to <em>see, segment and act on.</em>
+      </h2>
+    </div>
+
+    <div class="owned-grid">
+      <div class="col">
+        <h4>Identity</h4>
+        <ul>
+          <li>Name</li>
+          <li>Phone number</li>
+          <li>Time &amp; date of call</li>
+          <li>Which store / city</li>
+          <li>First-time or repeat caller</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>Intent</h4>
+        <ul>
+          <li>Reason for the call</li>
+          <li>Category interest</li>
+          <li>Specific style mentioned</li>
+          <li>Visit intent</li>
+          <li>Buying timeframe</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>Need</h4>
+        <ul>
+          <li>Fit issue</li>
+          <li>Wide-foot or comfort need</li>
+          <li>Pain-point mentioned</li>
+          <li>Occasion or use case</li>
+          <li>Style preference</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>Outcome</h4>
+        <ul>
+          <li>Resolved or escalated</li>
+          <li>Follow-up required</li>
+          <li>Restock alert flagged</li>
+          <li>Recommended product</li>
+          <li>Future audience segment</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────── OFFER ────────── -->
+  <section class="offer">
+    <div class="section-label">
+      <span class="num">v.</span>
+      <span class="line"></span>
+    </div>
+    <span class="eyebrow">The offer · Phase 1</span>
+
+    <div class="offer-grid" style="margin-top:28px;">
+      <div class="price-card">
+        <div class="label">London pilot <span class="pill">Phase 1</span></div>
+        <div class="figure">
+          <span class="currency">£</span>
+          <span class="num">600</span>
+          <span class="per">/ month</span>
+        </div>
+        <p class="blurb">
+          A single low-friction monthly fee.
+          24/7 AI voice for Westfield London, CRM included, set up and tuned by us.
+        </p>
+        <div class="note">
+          <b>1,000 minutes included each month.</b><br>
+          Additional usage billed at £0.20 per minute.
+          No platform fees, no setup fee for the pilot.
+        </div>
+      </div>
+
+      <div class="includes">
+        <h3>What is included</h3>
+        <p class="lede">All three products, one monthly fee. Everything below is part of the £600/mo Phase&nbsp;1 pilot.</p>
+        <ul>
+          <li><span class="tick">★</span><span><b>AI Voice</b> — 24/7 brand-safe answering on one central VIVAIA UK line, ready for every future store.</span></li>
+          <li><span class="tick">★</span><span><b>Signal</b> — recording, transcription, intent scoring and auto reason-for-call tagging on every conversation.</span></li>
+          <li><span class="tick">★</span><span><b>Connect</b> — the CRM, owned by VIVAIA. Every caller captured, tagged, exportable, remarketing-ready.</span></li>
+          <li><span class="tick">★</span><span><b>1,000 minutes per month</b> included; additional usage billed at £0.20 per minute.</span></li>
+          <li><span class="tick">★</span><span><b>2 weeks of post-launch fine-tuning</b> on AI Voice script and Signal's tag taxonomy.</span></li>
+          <li><span class="tick">★</span><span><b>Monthly reporting</b> on enquiry patterns, intent signals and service performance.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────── PHASE 2 ────────── -->
+  <section class="phase2">
+    <div class="section-label">
+      <span class="num">vi.</span>
+      <span class="line"></span>
+    </div>
+    <span class="eyebrow">Phase 2 · when ready <span class="dot"></span> a natural extension</span>
+
+    <div class="p2-grid" style="margin-top:28px;">
+      <div>
+        <h2>
+          Later, the same CRM<br>
+          quietly turns offline traffic<br>
+          into <em>online audiences.</em>
+        </h2>
+        <p class="lede">
+          Once Phase 1 is live and the team trusts the data, we extend the same system into the store itself —
+          QR sign-ups, fit consultations, restock requests and try-on capture — and connect those signals to your online remarketing.
+          One unified profile, store + call + site.
+        </p>
+        <span class="later">Scoped after Phase 1 · No commitment today</span>
+      </div>
+      <div class="p2-list">
+        <div class="p2-item">
+          <span class="k">a.</span>
+          <span><b>In-store capture</b>QR sign-ups, assisted-shopping notes, restock and try-on requests linked to a customer record.</span>
+        </div>
+        <div class="p2-item">
+          <span class="k">b.</span>
+          <span><b>Unified profiles</b>Call + store + site behaviour combined, by fit need and category interest.</span>
+        </div>
+        <div class="p2-item">
+          <span class="k">c.</span>
+          <span><b>Online retargeting</b>Audiences built from offline intent — loafer-curious, wide-fit, occasion-shopping — pushed to your paid channels.</span>
+        </div>
+        <div class="p2-item">
+          <span class="k">d.</span>
+          <span><b>UK localisation</b>City-level demand signals to guide where Manchester, Edinburgh or Bristol come next.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────── CLOSING / CTA ────────── -->
+  <section class="closing">
+    <div class="section-label">
+      <span class="num">vii.</span>
+      <span class="line"></span>
+    </div>
+    <span class="eyebrow">Next step</span>
+
+    <div class="closing-inner" style="margin-top:28px;">
+      <div class="closing-img">
+        <img src="../images/london-store.png" alt="VIVAIA London Westfield store" />
+      </div>
+      <div>
+        <h2>
+          Start owning the data,<br>
+          starting with <em>Westfield London.</em>
+        </h2>
+        <p class="body">
+          One 30-minute working session to agree the top FAQs, escalation rules and the CRM fields that matter most to VIVAIA UK.
+          From there, the £600/month pilot can be scoped, signed and live inside two weeks — one central line, every future store ready to plug in, and customer data the brand finally owns from day one.
+        </p>
+        <div class="cta-row">
+          <a class="btn" href="https://chao.macaws.ai" target="_blank" rel="noopener">
+            Start the London pilot
+            <span class="arrow"></span>
+          </a>
+          <div class="cta-meta">
+            <b>Chao Liu · Macaws AI</b><br>
+            chao.macaws.ai · book a working session
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="colophon">
+      <span><b>VIVAIA</b> · UK Proposal · London Store Pilot</span>
+      <span>v2 · May 2026</span>
+      <span>Prepared by <b>Macaws AI</b></span>
+    </div>
+  </section>
+
+</article>
+
+</body>
+</html>
