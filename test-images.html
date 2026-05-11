@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Image load test</title>
+<style>
+  body { font-family: system-ui; padding: 24px; background: #f3ece0; }
+  h1 { font-size: 14px; letter-spacing: 0.2em; text-transform: uppercase; }
+  .row { margin: 24px 0; padding: 16px; background: #fbf7ec; border: 1px solid #d9cdb5; border-radius: 6px; }
+  .row p { font-family: monospace; font-size: 12px; color: #555; margin: 0 0 12px; }
+  .row img { max-width: 100%; height: auto; display: block; border: 1px dashed #aaa; }
+</style>
+</head>
+<body>
+<h1>Image load test · open this in your browser</h1>
+<p>If both images below display, your viewing setup is fine and the issue is CSS-specific to index.html.<br>
+If they show as broken icons, the issue is the file path or how you're opening the page.</p>
+
+<div class="row">
+  <p>src="images/hero.jpg"</p>
+  <img src="images/hero.jpg" alt="hero" />
+</div>
+
+<div class="row">
+  <p>src="images/london-store.png"</p>
+  <img src="images/london-store.png" alt="london store" />
+</div>
+
+<div class="row">
+  <p>src="crm_avatar_vivaia.mp4" (video)</p>
+  <video src="crm_avatar_vivaia.mp4" controls width="400"></video>
+</div>
+</body>
+</html>
